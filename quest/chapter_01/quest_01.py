@@ -55,6 +55,8 @@ while True:
 
         # 게임 재시작 여부 함수 호출 
         if (isRestart()):
+            
+            # 게임 시작 여부 초기화
             isStart = True
         else:
             print("게임을 종료합니다.")
