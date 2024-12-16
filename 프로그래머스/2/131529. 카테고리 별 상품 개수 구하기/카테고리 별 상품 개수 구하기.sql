@@ -12,3 +12,13 @@ SELECT SUBSTR(PRODUCT_CODE, 1, 2) AS CATEGORY,
 FROM PRODUCT 
 GROUP BY CATEGORY # MYSQL에서는 GROUP BY에서 별칭 사용이 가능하다
 ORDER BY CATEGORY
+
+SELECT
+    LEFT(product_code, 2) category,
+    COUNT(product_id) products
+FROM
+    product
+GROUP BY
+    1
+ORDER BY
+    1;
