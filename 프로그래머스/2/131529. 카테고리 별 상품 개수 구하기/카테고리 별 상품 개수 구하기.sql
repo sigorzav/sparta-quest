@@ -1,24 +1,5 @@
-    SELECT CATEGORY
-         , COUNT(CATEGORY)
-      FROM (
-            SELECT SUBSTR(PRODUCT_CODE, 1, 2) AS CATEGORY
-              FROM PRODUCT 
-           ) M
+    SELECT SUBSTR(PRODUCT_CODE, 1, 2) AS CATEGORY
+         , COUNT(1)
+      FROM PRODUCT 
   GROUP BY CATEGORY
   ORDER BY CATEGORY
-
-SELECT SUBSTR(PRODUCT_CODE, 1, 2) AS CATEGORY,
-       COUNT(PRODUCT_ID) AS PRODUCTS
-FROM PRODUCT 
-GROUP BY CATEGORY # MYSQL에서는 GROUP BY에서 별칭 사용이 가능하다
-ORDER BY CATEGORY
-
-SELECT
-    LEFT(product_code, 2) category,
-    COUNT(product_id) products
-FROM
-    product
-GROUP BY
-    1
-ORDER BY
-    1;
