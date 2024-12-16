@@ -1,0 +1,10 @@
+    SELECT CATEGORY
+         , COUNT(CATEGORY)
+      FROM (
+            SELECT SUBSTR(PRODUCT_CODE, 1, 2) AS CATEGORY
+              FROM PRODUCT 
+           ) M
+  GROUP BY CATEGORY
+  ORDER BY CATEGORY
+       
+  
