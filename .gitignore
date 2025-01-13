@@ -1,0 +1,29 @@
+# Executable files
+*.exe
+
+# 바이트코드 파일
+__pycache__/
+*.py[cod]
+
+# 가상 환경
+.venv/
+venv/
+ENV/
+
+# IDE 설정
+.idea/
+.vscode/
+*.swp
+
+# 로그 파일과 데이터베이스
+*.log
+*.sqlite
+
+# 설치 스크립트가 생성하는 파일
+build/
+dist/
+*.egg-info/
+
+# 운영 체제 생성 파일
+.DS_Store
+Thumbs.db

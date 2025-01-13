@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     
     # Local
     "accounts",
-    "blog",
+    "post",
 ]
 
 MIDDLEWARE = [

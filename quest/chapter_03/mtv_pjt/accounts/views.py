@@ -16,7 +16,7 @@ def login(request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect("blog:blog_list")
+            return redirect("post:post_list")
     # GET 요청인 경우, 로그인 화면으로 이동
     else:
         form = AuthenticationForm()
