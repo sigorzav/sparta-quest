@@ -7,17 +7,19 @@ from django.contrib.auth.forms import (
     UserCreationForm,
 )
 
+# [로그인] 
+# - 로그인 화면 조회 및 처리
 @require_http_methods(["GET", "POST"])
 def login(request):
-    # POST 요청인 경우, 로그인 처리
-    # 성공 :: 게시물 목록 화면으로
-    # 실패 :: 로그인 화면
+    # POST :: 로그인 처리
+    #  > 인증 성공 시, 게시글 목록 화면 이동
+    #  > 인증 실패 시, 로그인 화면 이동
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
             return redirect("post:post_list")
-    # GET 요청인 경우, 로그인 화면으로 이동
+    # GET :: 로그인 화면 이동
     else:
         form = AuthenticationForm()
         context = {
@@ -25,8 +27,11 @@ def login(request):
         }
         return render(request, "accounts/login.html", context)    
 
+# [로그아웃] 
+# - 접속 세션 사용자 로그아웃 처리 
 @require_POST
 def logout(request):
+    # 인증된(세션이 존재하는) 경우에만 로그아웃 처리
     if request.user.is_authenticated:
         auth_logout(request)
     return redirect("accounts:login")
