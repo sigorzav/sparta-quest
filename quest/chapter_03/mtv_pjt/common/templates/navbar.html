@@ -1,0 +1,13 @@
+<nav>
+    <ul>
+        <li><a href="{% url 'post:post_list' %}">게시글</a></li>
+        <li><a href="#">내정보</a></li>
+        <li><a href="#">관리자</a></li>
+        <li>
+            <form id="logout-form" action="{% url 'user:logout' %}" method="POST">
+                {% csrf_token %}
+                <a href="{% url 'user:logout' %}" onclick="document.getElementById('logout-form').submit(); return false;">로그아웃</a>
+            </form>
+        </li>
+    </ul>
+</nav>

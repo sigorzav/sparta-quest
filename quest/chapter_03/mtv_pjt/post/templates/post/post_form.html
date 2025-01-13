@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Post Form</h1>
+
+    <form action="{% if is_update %}{% url 'post:post_update' post.pk %}{% else %}{% url 'post:post_create' %}{% endif %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ request.resolver_match.url_name }}
+        <button type="submit">저장</button>
+    </form>
+{% endblock content %}

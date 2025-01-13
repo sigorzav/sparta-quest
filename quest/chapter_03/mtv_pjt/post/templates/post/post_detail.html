@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h1>Post Detail</h1>
+    {{ post.title }}
+    {{ post.content }}
+    {{ post.created_at }}
+    {{ post.updated_at }}
+    <img src="{{ post.get_image_url }}" alt="Post Image">
+    <a href="{% url 'post:post_list' %}">게시글</a>
+    <a href="{% url 'post:post_update' post.pk %}">수정</a>
+
+    <form action="{% url 'post:post_delete' post.pk %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">삭제</button>
+    </form>
+{% endblock content %}
