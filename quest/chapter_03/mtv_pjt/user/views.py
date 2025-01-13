@@ -2,10 +2,8 @@ from django.shortcuts import render, redirect
 from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from django.contrib.auth.forms import (
-    AuthenticationForm, 
-    UserCreationForm,
-)
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import UserCreationForm
 
 # - 로그인 화면 조회 및 처리
 @require_http_methods(["GET", "POST"])
@@ -43,11 +41,13 @@ def signup(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("post:post_list")
+            return redirect("user:login")
+        else:
+            return render(request, "user/signup.html", { "form": form })
     # GET :: 로그인 화면 이동
     else:
         form = UserCreationForm()
         context = {
             "form": form
         }
-        return render(request, "user/login.html", context)    
+        return render(request, "user/signup.html", context)    
