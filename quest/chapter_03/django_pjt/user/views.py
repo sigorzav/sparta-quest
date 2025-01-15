@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth.forms import AuthenticationForm
-from django.views.decorators.http import require_http_methods
-from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
+from django.contrib.auth import login as auth_login
+from django.shortcuts import render, redirect
 # from .forms import UserCreationForm
 
 # 로그인 화면 조회 및 처리
@@ -23,3 +23,11 @@ def login(request):
             "form": form
         }
         return render(request, "user/login.html", context)
+    
+# - 접속 세션 사용자 로그아웃 처리 
+@require_POST
+def logout(request):
+    # 인증된(세션이 존재하는) 경우에만 로그아웃 처리
+    if request.user.is_authenticated:
+        auth_logout(request)
+    return redirect("user:login")    
