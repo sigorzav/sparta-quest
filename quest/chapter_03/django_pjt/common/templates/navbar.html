@@ -12,7 +12,10 @@
                 <li class="nav-item"><a class="nav-link" href="#">MyPage</a></li>
 
                 <!-- Admin Page -->
-                <li class="nav-item"><a class="nav-link" href="#">Admin</a></li>
+                <!-- superuser 권한이 있는 경우에만 접근 가능 -->
+                {% if request.user.is_superuser == 1 %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
+                {% endif %}
                 
                 <!-- Logout -->
                 <li class="nav-item">

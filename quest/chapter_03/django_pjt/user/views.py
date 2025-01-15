@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
 from django.shortcuts import render, redirect
-# from .forms import UserCreationForm
+from .forms import UserCreationForm
 
 # 로그인 화면 조회 및 처리
 @require_http_methods(["GET", "POST"])
@@ -24,10 +24,31 @@ def login(request):
         }
         return render(request, "user/login.html", context)
     
-# - 접속 세션 사용자 로그아웃 처리 
+# 접속 세션 사용자 로그아웃 처리 
 @require_POST
 def logout(request):
     # 인증된(세션이 존재하는) 경우에만 로그아웃 처리
     if request.user.is_authenticated:
         auth_logout(request)
-    return redirect("user:login")    
+    return redirect("user:login")
+
+# 사용자 회원가입
+@require_http_methods(["GET", "POST"])
+def signup(request):
+    # POST :: 회원가입 처리
+    #  > 가입 성공 시, 게시글 목록 화면 이동
+    #  > 가입 실패 시, 로그인 화면 이동
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("user:login")
+        else:
+            return render(request, "user/signup.html", { "form": form })
+    # GET :: 로그인 화면 이동
+    else:
+        form = UserCreationForm()
+        context = {
+            "form": form
+        }
+        return render(request, "user/signup.html", context)

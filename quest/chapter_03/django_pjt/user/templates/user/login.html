@@ -8,14 +8,19 @@
 
 {% block content %}
     <div class="login-container">
-        <h1>LOGIN</h1>
+        <h1 style="padding-bottom: 5px;">LOGIN</h1>
         <form method="post">
             {% csrf_token %}
-            {{ form.username }}
-            {{ form.password }}
-            <button type="submit">로그인</button>
+            <div class="mb-3">
+                <label for="username" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">username</label>
+                {{ form.username }}
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">password</label>
+                {{ form.password }}
+            </div>
+            <button type="submit">Login</button>
         </form>
-        {% comment %} <a href="#">비밀번호를 잊으셨나요?</a> {% endcomment %}
-        <a href="#">회원가입</a>
+        <a href="{% url 'user:signup' %}">Sign Up</a>
     </div>
 {% endblock content %}

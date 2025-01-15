@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block resource %}
+    <link rel="stylesheet" href="{% static 'user/css/login.css' %}">
+{% endblock resource %}
+
+{% block content %}
+    <div class="login-container">
+        {{ form.errors }}
+        <h1 style="padding-bottom: 5px;">User</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">username</label>
+                {{ form.username }}
+            </div>
+            <div class="mb-3">
+                <label for="password1" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">password1</label>
+                {{ form.password1 }}
+            </div>
+            <div class="mb-3">
+                <label for="password2" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">password2</label>
+                {{ form.password2 }}
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <a href="#" onclick="window.history.back(); return false;">Back</a>
+    </div>
+{% endblock content %}

@@ -35,12 +35,13 @@
                 <div class="mb-4 d-flex justify-content-between align-items-center">
                     <div class="d-flex">
                         <button type="button" class="btn btn-primary me-1" onclick="location.href='{% url 'post:post_list' %}'">List</button>
-                        <button type="button" class="btn btn-primary me-1" onclick="location.href='{% url 'post:post_update' post.pk %}'">Update</button>
-                        <form action="{% url 'post:post_delete' post.pk %}" method="POST">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger me-1">Delete</button>
-                        </form>
-                        
+                        {% if post.author == request.user %}
+                            <button type="button" class="btn btn-primary me-1" onclick="location.href='{% url 'post:post_update' post.pk %}'">Update</button>
+                            <form action="{% url 'post:post_delete' post.pk %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger me-1">Delete</button>
+                            </form>
+                        {% endif %}
                     </div>                        
                     <button type="button" class="btn btn-light">Comment</button>
                 </div>
