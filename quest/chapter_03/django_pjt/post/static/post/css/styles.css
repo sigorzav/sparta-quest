@@ -246,7 +246,7 @@ sup {
 
 a {
   color: var(--bs-link-color);
-  text-decoration: underline;
+  text-decoration: none;
 }
 a:hover {
   color: var(--bs-link-hover-color);
@@ -10823,4 +10823,10 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+
+.fixed-size {
+  width: 500px;       /* 원하는 너비 */
+  height: 300px;      /* 원하는 높이 */
+  object-fit: cover;  /* 비율 유지 */
 }

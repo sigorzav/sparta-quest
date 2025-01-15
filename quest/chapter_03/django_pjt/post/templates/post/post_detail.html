@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block resource %}
+    <link rel="stylesheet" href="{% static 'post/css/styles.css' %}">
+{% endblock resource %}
+
+{% block content %}
+    <!-- Page content-->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <!-- Post content-->
+                <article>
+                    <!-- Post header-->
+                    <header class="mb-4">
+                        <!-- Post title-->
+                        <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+                        <!-- Post meta content-->
+                        <div class="text-muted fst-italic mb-2">Last Update, {{ post.updated_at }}</div>
+                        <!-- Post categories-->
+                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
+                        <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
+                    </header>
+                    <!-- Post image -->
+                    <figure class="mb-4" style="text-align: center">
+                        <img src="{{ post.get_image_url }}" class="fixed-size" alt="Post Image">
+                    </figure>
+                    <!-- Post content-->
+                    <section class="mb-5">
+                        <p class="fs-5 mb-4">{{ post.content }}</p>                        
+                    </section>
+                </article>
+                <div class="mb-4 d-flex justify-content-between align-items-center">
+                    <div class="d-flex">
+                        <button type="button" class="btn btn-primary me-1" onclick="location.href='{% url 'post:post_list' %}'">List</button>
+                        <button type="button" class="btn btn-primary me-1">Update</button>
+                        <form action="{% url 'post:post_delete' post.pk %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger me-1">Delete</button>
+                        </form>
+                        
+                    </div>                        
+                    <button type="button" class="btn btn-light">Comment</button>
+                </div>
+                
+                <!-- Comments section-->
+                <section class="mb-5">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <!-- Comment form-->
+                            <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
+                            <!-- Comment with nested comments-->
+                            <div class="d-flex mb-4">
+                                <!-- Parent comment-->
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                <div class="ms-3">
+                                    <div class="fw-bold">Commenter Name</div>
+                                    If you're going to lead a space frontier, it has to be government; it'll never be private enterprise. Because the space frontier is dangerous, and it's expensive, and it has unquantified risks.
+                                </div>
+                            </div>
+                            <!-- Single comment-->
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                <div class="ms-3">
+                                    <div class="fw-bold">Commenter Name</div>
+                                    When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

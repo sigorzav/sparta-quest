@@ -38,7 +38,7 @@
                                 {% for post in page_obj %}
                                     <tr>
                                         <th scope="row" style="text-align: right;">{{ post.id }}</th>
-                                        <td>{{ post.title }}</td>
+                                        <td><a href="{% url 'post:post_detail' post.pk %}">{{ post.title }}</a></td>
                                         <td style="text-align: center;">{{ post.author }}</td>
                                         <td style="text-align: center;">{{ post.created_at|date:"Y-m-d H:i:s" }}</td>
                                         <td style="text-align: right;">{{ post.views }}</td>
