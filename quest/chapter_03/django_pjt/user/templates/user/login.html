@@ -1,5 +1,21 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
+{% block resource %}
+    <link rel="stylesheet" href="{% static 'user/css/login.css' %}">
+{% endblock resource %}
+
 {% block content %}
-    <h1>Login Page</h1>
+    <div class="login-container">
+        <h1>LOGIN</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.username }}
+            {{ form.password }}
+            <button type="submit">로그인</button>
+        </form>
+        {% comment %} <a href="#">비밀번호를 잊으셨나요?</a> {% endcomment %}
+        <a href="#">회원가입</a>
+    </div>
 {% endblock content %}

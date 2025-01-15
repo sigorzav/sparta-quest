@@ -1,0 +1,78 @@
+/* 배경 스타일 */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg,hsl(240, 16.70%, 97.60%),rgb(134, 182, 142));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #fff;
+}
+
+/* 로그인 카드 컨테이너 */
+.login-container {
+    background: #fff;
+    width: 400px;
+    max-width: 90%;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: #333;
+}
+
+/* 제목 스타일 */
+.login-container h1 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color:rgb(36, 207, 21);
+}
+
+/* 입력 필드 스타일 */
+.login-container input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+/* 버튼 스타일 */
+.login-container button {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgb(36, 207, 21);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 링크 스타일 */
+.login-container a {
+    display: block;
+    margin-top: 1rem;
+    color:rgb(36, 100, 52);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 500px) {
+    .login-container {
+        padding: 1.5rem;
+    }
+
+    .login-container h1 {
+        font-size: 1.5rem;
+    }
+}
