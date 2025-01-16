@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block resource %}
+    <link rel="stylesheet" href="{% static 'post/css/styles.css' %}">
+{% endblock resource %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <div class="page-heading">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1">🐶 MyPage</h1>
+                </div>
+                <hr>
+                <!-- Post image -->
+                <figure class="mb-4" style="text-align: center">
+                    <img src="{{ user.profile_img.url }}" class="profile-fixed-size" alt="Profile Image">
+                </figure>
+                <form action="{% url 'user:user_profile' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nickname" class="form-label">Nickname</label>
+                        {{ form.nickname }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="bio" class="form-label">Bio</label>
+                        {{ form.bio }}
+                    </div>
+                    <div class="mb-3">
+                        <label for="profile_img" class="form-label">Image</label>
+                        {{ form.profile_img }}
+                    </div>
+                    <div class="mb-4 d-flex justify-content-end align-items-center">
+                        <button type="submit" class="btn btn-primary me-2">Save</button>
+                    </div>
+                </form>
+                <hr>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

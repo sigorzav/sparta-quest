@@ -2,7 +2,7 @@
     <div class="container">
         <div class="d-flex align-items-center">
             <!-- Profile Img-->
-            <img src="{{ request.user.profile_img }}" alt="Profile Image" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover; margin-right: 8px;">
+            <img src="{{ user.profile_img.url }}" alt="Profile Image" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover; margin-right: 8px;">
 
             <!-- Nickname -->
             <span class="text-white">{{ request.user.nickname }}</span>
@@ -16,11 +16,11 @@
                 </li>
 
                 <!-- MyPage -->
-                <li class="nav-item"><a class="nav-link" href="#">MyPage</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'user:user_profile' %}">MyPage</a></li>
 
                 <!-- Admin Page -->
-                <!-- superuser 권한이 있는 경우에만 접근 가능 -->
-                {% if request.user.is_superuser == 1 %}
+                <!-- superuser 또는 staff 권한이 있는 경우에만 접근 가능 -->
+                {% if request.user.is_superuser == 1 or request.user.is_staff == 1 %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin</a></li>
                 {% endif %}
                 

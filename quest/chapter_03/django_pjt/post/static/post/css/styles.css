@@ -10830,3 +10830,9 @@ textarea.form-control-lg {
   height: 500px;      /* 원하는 높이 */
   object-fit: cover;  /* 비율 유지 */
 }
+
+.profile-fixed-size {
+  width: 200px;       /* 원하는 너비 */
+  height: 200px;      /* 원하는 높이 */
+  object-fit: cover;  /* 비율 유지 */
+}

@@ -1,9 +1,11 @@
 from django.views.decorators.http import require_POST, require_http_methods
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import login as auth_login
-from django.shortcuts import render, redirect
-from .forms import UserCreationForm
+from .forms import UserCreationForm, UserProfileForm
+from .models import User
 
 # 로그인 화면 조회 및 처리
 @require_http_methods(["GET", "POST"])
@@ -52,3 +54,24 @@ def signup(request):
             "form": form
         }
         return render(request, "user/signup.html", context)
+    
+# 사용자 프로필 조회 및 작성
+@login_required
+@require_http_methods(["GET", "POST"])
+def user_profile(request):
+    user = get_object_or_404(User, pk=request.user.pk)
+    
+    # POST :: 프로필 저장
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("user:user_profile")
+    # GET :: 프로필 조회/작성 화면 이동    
+    else:
+        form = UserProfileForm(instance=user)
+        context = {
+            "form": form,
+            "user": user,
+        }
+        return render(request, "user/profile.html", context)
