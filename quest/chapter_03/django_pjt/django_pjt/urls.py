@@ -24,8 +24,12 @@ from common import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index),
-    path("user/", include("user.urls")),
-    path("post/", include("post.urls")),
+    path("user/", include(("user.urls", "user"), namespace="user")),
+    path("post/", include(("post.urls", "post"), namespace="post")),
+    
+    # DRF
+    path("api/v1/user/", include(("user.urls", "api_user"), namespace="api_user")),
+    path("api/v1/post/", include(("post.urls", "api_post"), namespace="api_post")),
 ]
 
 if settings.DEBUG:

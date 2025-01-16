@@ -8,6 +8,7 @@ class Post(TimestampModel):
     content     = models.TextField()
     post_img    = models.ImageField(blank=True, upload_to='post_imgs/')
     views       = models.IntegerField(default=0)
+    likes       = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="likes", blank=True)
     
     def get_image_url(self):
         if self.post_img:

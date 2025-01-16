@@ -1,10 +1,17 @@
 from django.views.decorators.http import require_POST, require_http_methods
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import APIView
+from rest_framework.response import Response
 from django.core.paginator import Paginator
+from rest_framework import status
 from django.db.models import F
 from .forms import PostForm
 from .models import Post
+
+# ###################################################################################
+# MTV & DEF
+# ###################################################################################
 
 # 게시글 목록 조회
 @login_required
@@ -52,8 +59,16 @@ def post_detail(request, pk):
     # 조회 수 증가
     Post.objects.filter(pk=pk).update(views=F('views') + 1)
     
+    # 좋아요
+    if post.likes.filter(id=request.user.id).exists():
+        liked = True
+    else:
+        liked = False
+    print(liked)            
     context = {
-        "post": post
+        "post": post,
+        "liked": liked,
+        "likes_count": post.likes.count()        
     }
     return render(request, "post/post_detail.html", context)
 
@@ -88,3 +103,28 @@ def post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
     return redirect("post:post_list")
+
+
+# ###################################################################################
+# DRF & CLASS
+# ###################################################################################
+# 좋아요
+class LikesAPIView(APIView):
+    
+    def post(self, request, *args, **kwargs):
+        post_pk = self.kwargs.get('post_pk')
+        post = get_object_or_404(Post, pk=post_pk)
+        
+        # 좋아요 취소
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+            liked = False
+        # 좋아요 추가
+        else:
+            post.likes.add(request.user)
+            liked = True
+        
+        return Response({
+            "liked": liked,
+            "likes_count": post.likes.count()
+        })

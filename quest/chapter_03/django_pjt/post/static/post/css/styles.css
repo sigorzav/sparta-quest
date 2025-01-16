@@ -10836,3 +10836,9 @@ textarea.form-control-lg {
   height: 200px;      /* 원하는 높이 */
   object-fit: cover;  /* 비율 유지 */
 }
+
+.comment-fixed-size {
+  width: 70px;        /* 원하는 너비 */
+  height: 70px;       /* 원하는 높이 */
+  object-fit: cover;  /* 비율 유지 */
+}
