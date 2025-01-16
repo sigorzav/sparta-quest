@@ -24,6 +24,18 @@
                 <label for="password2" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">password2</label>
                 {{ form.password2 }}
             </div>
+            <div class="mb-3">
+                <label for="nickname" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">nickname</label>
+                {{ form.nickname }}
+            </div>
+            <div class="mb-3">
+                <label for="post_img" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">Image</label>
+                {{ form.profile_img }}
+            </div>
+            <div class="mb-3">
+                <label for="bio" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">bio</label>
+                {{ form.bio }}
+            </div>
             <button type="submit">Sign Up</button>
         </form>
         <a href="#" onclick="window.history.back(); return false;">Back</a>

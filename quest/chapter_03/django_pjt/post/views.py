@@ -9,7 +9,7 @@ from .models import Post
 # 게시글 목록 조회
 @login_required
 def post_list(request):
-    posts = Post.objects.all().order_by('-pk')
+    posts = Post.objects.select_related('author').all().order_by('-pk')
     
     # 페이징
     paginator = Paginator(posts, 10)            # 페이지에서 보여줄 포스트 수

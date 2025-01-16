@@ -11,7 +11,8 @@
         <div class="row">
             <div class="col-lg-6 mx-auto">
                 <div class="page-heading">
-                    <h1>{% if is_update %}Edit Post{% else %}New Post{% endif %}</h1>
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1">🐶 {% if is_update %}Edit Post{% else %}New Post{% endif %}</h1>
                 </div>
                 <hr>
                 <form action="{% if is_update %}{% url 'post:post_update' post.pk %}{% else %}{% url 'post:post_create' %}{% endif %}" method="POST" enctype="multipart/form-data">
