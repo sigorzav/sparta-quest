@@ -4,6 +4,7 @@ from . import views
 app_name = "post"
 
 urlpatterns = [
+    # MTV
     path("", views.post_list, name="post_list"),
     path("post-create/", views.post_create, name="post_create"),
     path("post-detail/<int:pk>/", views.post_detail, name="post_detail"),

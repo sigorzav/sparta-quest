@@ -64,7 +64,7 @@ def post_detail(request, pk):
         liked = True
     else:
         liked = False
-    print(liked)            
+    
     context = {
         "post": post,
         "liked": liked,
@@ -108,6 +108,7 @@ def post_delete(request, pk):
 # ###################################################################################
 # DRF & CLASS
 # ###################################################################################
+
 # 좋아요
 class LikesAPIView(APIView):
     

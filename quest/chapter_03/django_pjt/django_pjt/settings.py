@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     # Third-party
     "django_seed",
+    "rest_framework",
     
     # Local
     "common",
@@ -136,3 +137,11 @@ AUTH_USER_MODEL = "user.User"
 # Media files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Rest Framework
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        'rest_framework.authentication.SessionAuthentication',
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}

@@ -7,9 +7,17 @@ from django.contrib.auth import login as auth_login
 from .forms import UserCreationForm, UserProfileForm
 from .models import User
 
+# ###################################################################################
+# MTV & DEF
+# ###################################################################################
+
 # 로그인 화면 조회 및 처리
 @require_http_methods(["GET", "POST"])
 def login(request):
+    # 세션이 있는 경우, 게시글 목록 화면 이동
+    if request.user.is_authenticated:
+        return redirect("post:post_list")
+    
     # POST :: 로그인 처리
     #  > 인증 성공 시, 게시글 목록 화면 이동
     #  > 인증 실패 시, 로그인 화면 이동
@@ -75,3 +83,8 @@ def user_profile(request):
             "user": user,
         }
         return render(request, "user/profile.html", context)
+    
+# ###################################################################################
+# DRF & CLASS
+# ###################################################################################
+
