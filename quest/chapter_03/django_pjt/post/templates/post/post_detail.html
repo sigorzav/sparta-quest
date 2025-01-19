@@ -36,6 +36,51 @@
                     }
                 });
             })
+
+            // 댓글 작성
+            $('#comment-post-form').on('submit', function(e){
+                e.preventDefault();
+
+                const form = e.target;
+                const url = form.action;
+                const formData = Object.fromEntries(new FormData(form));
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    success: function (data) {
+                        // 서버에서 렌더링된 댓글 HTML 추가
+                        const commentSection = document.getElementById('comment-section');
+                        commentSection.insertAdjacentHTML('beforeend', response.comment_html);
+                    },
+                    error: function (e) {
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            })
+
+            // 댓글 삭제
+            $('.comment-delete-btn').on('click', function(e){
+                e.preventDefault();
+                
+                const button = $(this);
+                const url = button.data('url');
+
+                $.ajax({
+                    url: url,
+                    method: 'DELETE',
+                    headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                    success: function (data) {
+                        $('#comment-' + data.comment_pk).remove()
+                    },
+                    error: function (e) {
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            })
         })
     </script>
 {% endblock resource %}
@@ -91,7 +136,7 @@
                                 <i class="bi bi-heart me-2"></i> Like
                             {% endif %}
                         </button>
-                        <span id="like-count">{{ post.likes.count }}</span>
+                        <span id="like-count">{{ post.get_likes_count }}</span>
                     </div>
                 </div>
 
@@ -100,23 +145,16 @@
                     <div class="card bg-light">
                         <div class="card-body">
                             <!-- Comment form -->
-                            <form class="mb-4 d-flex">
-                                <textarea class="form-control me-2" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                            <form id="comment-post-form" action="{% url 'api_post:comment_list' post.pk %}" class="mb-4 d-flex">
+                                <textarea name="content" class="form-control me-2" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
                                 <button type="submit" class="btn btn-outline-secondary">Post</button>
                             </form>
+                            
                             <!-- Single comment -->
-                            <div class="d-flex align-items-start">
-                                <div class="flex-shrink-0">
-                                    <img class="rounded-circle comment-fixed-size" src="{{ user.profile_img.url }}" alt="..." />
-                                </div>
-                                <div class="ms-3">
-                                    <div class="fw-bold">{{ request.user.nickname }}</div>
-                                    When I look at the universe and all the ways the universe wants to kill us, I find it hard to reconcile that with statements of beneficence.
-                                </div>
-                                <div class="d-flex flex-column ms-auto">
-                                    <button class="btn btn-outline-primary btn-sm">Update</button>
-                                    <button class="btn btn-outline-danger btn-sm mt-2">Delete</button>
-                                </div>
+                            <div id="comment-section">
+                                {% for comment in post.get_comments %}
+                                    {% include "post/comments.html" %}
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

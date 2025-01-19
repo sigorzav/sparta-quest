@@ -10,7 +10,10 @@ urlpatterns = [
     path("post-detail/<int:pk>/", views.post_detail, name="post_detail"),
     path("post-update/<int:pk>/", views.post_update, name="post_update"),
     path("post-delete/<int:pk>/", views.post_delete, name="post_delete"),
+    path("<int:post_pk>/comment-create/", views.comment_create, name="comment_create"),
     
     # DRF
     path("likes/<int:post_pk>/", views.LikesAPIView.as_view(), name="post_like"),
+    path("<int:post_pk>/comments/", views.CommentListAPIView.as_view(), name="comment_list"),
+    path("comments/<int:comment_pk>/", views.CommentDetailAPIView.as_view(), name="comment_detail"),
 ]

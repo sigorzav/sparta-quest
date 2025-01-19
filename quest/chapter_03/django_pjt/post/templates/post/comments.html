@@ -1,0 +1,19 @@
+<div id="comment-{{comment.pk}}">
+    <hr>
+    <div class="d-flex align-items-start">
+        <div class="flex-shrink-0">
+            <img class="rounded-circle comment-fixed-size" src="{{ comment.author.profile_img.url }}" alt="..." />
+        </div>
+        <div class="ms-3">
+            <div class="fw-bold">{{ comment.author.nickname }} {{comment.pk}}</div>
+            <p>{{ comment.content }}</p>
+            <span id="like-count">{{ comment.created_at|date:"Y-m-d H:i:s" }}</span>
+        </div>
+        {% if comment.author == request.user %}
+            <div class="d-flex flex-column ms-auto">
+                <button class="btn btn-outline-primary btn-sm">Update</button>
+                <button data-url="{% url 'api_post:comment_detail' comment.pk %}" class="btn btn-outline-danger btn-sm mt-2 comment-delete-btn">Delete</button>
+            </div>
+        {% endif %}
+    </div>
+</div>

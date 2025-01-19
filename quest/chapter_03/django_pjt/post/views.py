@@ -6,8 +6,10 @@ from rest_framework.response import Response
 from django.core.paginator import Paginator
 from rest_framework import status
 from django.db.models import F
+from .models import Post, Comment
 from .forms import PostForm
-from .models import Post
+from .serializers import CommentSerializers
+from django.http import JsonResponse
 
 # ###################################################################################
 # MTV & DEF
@@ -68,7 +70,7 @@ def post_detail(request, pk):
     context = {
         "post": post,
         "liked": liked,
-        "likes_count": post.likes.count()        
+        "likes_count": post.get_likes_count        
     }
     return render(request, "post/post_detail.html", context)
 
@@ -104,17 +106,33 @@ def post_delete(request, pk):
     post.delete()
     return redirect("post:post_list")
 
+@login_required
+@require_POST
+def comment_create(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    serializer = CommentSerializers(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        comment = serializer.save(author=request.user, post=post)
+        rendered_comment = render(request, 'post/comments.html', {'comment': comment}).content.decode('utf-8')
+        
+        return JsonResponse({'comment_html': rendered_comment})
 
 # ###################################################################################
 # DRF & CLASS
 # ###################################################################################
 
+# 공통 APIView
+class BaseApiView(APIView):
+    
+    def get_object(self, model, pk):
+        return get_object_or_404(model, pk=pk)
+
 # 좋아요
-class LikesAPIView(APIView):
+class LikesAPIView(BaseApiView):
     
     def post(self, request, *args, **kwargs):
         post_pk = self.kwargs.get('post_pk')
-        post = get_object_or_404(Post, pk=post_pk)
+        post = self.get_object(Post, post_pk)
         
         # 좋아요 취소
         if post.likes.filter(id=request.user.id).exists():
@@ -125,7 +143,49 @@ class LikesAPIView(APIView):
             post.likes.add(request.user)
             liked = True
         
-        return Response({
+        data = {
             "liked": liked,
-            "likes_count": post.likes.count()
-        })
+            "likes_count": post.get_likes_count
+        }
+        return Response(data)
+        
+# 댓글 조회/작성
+class CommentListAPIView(BaseApiView):
+
+    # 댓글 조회
+    def get(self, request, *args, **kwargs):
+        post_pk = self.kwargs.get('post_pk')
+        post = self.get_object(Post, post_pk)
+        
+        comments = post.comments.all()
+        
+        serializer = CommentSerializers(comments, many=True)
+        return Response(serializer.data)
+        
+    # 댓글 작성
+    def post(self, request, *args, **kwargs):
+        post_pk = self.kwargs.get('post_pk')
+        post = self.get_object(Post, post_pk)
+
+        serializer = CommentSerializers(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, post=post)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+# 댓글 수정/삭제  
+class CommentDetailAPIView(BaseApiView):
+
+    # 댓글 삭제
+    def delete(self, request, *args, **kwargs):
+        comment_pk = self.kwargs.get('comment_pk')
+        comment = self.get_object(Comment, comment_pk)
+        comment.delete()
+        
+        data = {
+            "comment_pk": comment_pk,
+            "author": comment.author.id,
+            "post": comment.post.id,
+            "content": comment.content,
+        }
+        return Response(data)
