@@ -10826,8 +10826,8 @@ textarea.form-control-lg {
 }
 
 .fixed-size {
-  width: 700px;       /* 원하는 너비 */
-  height: 500px;      /* 원하는 높이 */
+  width: 600px;       /* 원하는 너비 */
+  height: 400px;      /* 원하는 높이 */
   object-fit: cover;  /* 비율 유지 */
 }
 

@@ -52,9 +52,8 @@
                     data: JSON.stringify(formData),
                     headers: { 'X-CSRFToken': '{{ csrf_token }}' },
                     success: function (data) {
-                        // 서버에서 렌더링된 댓글 HTML 추가
-                        const commentSection = document.getElementById('comment-section');
-                        commentSection.insertAdjacentHTML('beforeend', response.comment_html);
+                        addComment(data)
+                        $('#comment-post-form')[0].reset();
                     },
                     error: function (e) {
                         alert('An error occurred. Please try again.');
@@ -63,7 +62,7 @@
             })
 
             // 댓글 삭제
-            $('.comment-delete-btn').on('click', function(e){
+            $('#comments-container').on('click', '.comment-delete-btn', function(e) {
                 e.preventDefault();
                 
                 const button = $(this);
@@ -81,6 +80,31 @@
                     }
                 });
             })
+
+            // 작성 댓글 화면 추가
+            function addComment(comment) {
+                var newCommentHtml = 
+                `
+                    <div id="comment-${comment.id}">
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0">
+                                <img class="rounded-circle comment-fixed-size" src="${comment.user_details.profile_img}" alt="..." />
+                            </div>
+                            <div class="ms-3">
+                                <div class="fw-bold">${comment.user_details.nickname} ${comment.id}</div>
+                                <p>${comment.content}</p>
+                                <span>${comment.formatted_date.updated_at}</span>
+                            </div>
+                            <div class="d-flex flex-column ms-auto">
+                                <button class="btn btn-outline-primary btn-sm">Update</button>
+                                <button data-url="/api/v1/post/comments/${comment.id}/" class="btn btn-outline-danger btn-sm mt-2 comment-delete-btn">Delete</button>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                `
+                $('#comment-section').append(newCommentHtml);
+            }
         })
     </script>
 {% endblock resource %}
@@ -141,24 +165,26 @@
                 </div>
 
                 <!-- Comments section-->
-                <section class="mb-5">
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <!-- Comment form -->
-                            <form id="comment-post-form" action="{% url 'api_post:comment_list' post.pk %}" class="mb-4 d-flex">
-                                <textarea name="content" class="form-control me-2" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
-                                <button type="submit" class="btn btn-outline-secondary">Post</button>
-                            </form>
-                            
-                            <!-- Single comment -->
-                            <div id="comment-section">
-                                {% for comment in post.get_comments %}
-                                    {% include "post/comments.html" %}
-                                {% endfor %}
+                <div id="comments-container">
+                    <section class="mb-5">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <!-- Single comment -->
+                                <div id="comment-section">
+                                    {% for comment in post.get_comments %}
+                                        {% include "post/comments.html" %}
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Comment form -->
+                                <form id="comment-post-form" action="{% url 'api_post:comment_list' post.pk %}" class="mb-1 d-flex">
+                                    <textarea name="content" class="form-control me-2" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
+                                    <button type="submit" class="btn btn-outline-secondary">Post</button>
+                                </form>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
         </div>
     </div>
