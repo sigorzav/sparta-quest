@@ -61,24 +61,79 @@
                 });
             })
 
-            // 댓글 삭제
-            $('#comments-container').on('click', '.comment-delete-btn', function(e) {
+            // 댓글 수정/취소 버튼 클릭
+            $('#comments-container').on('click', '.comment-update-btn, .comment-cancel-btn', function(e) {
+                const isEdit = $(this).hasClass('comment-update-btn');
+                toggleEditForm($(this).data('id'), isEdit)
+            })
+            
+            // 댓글 수정 폼 관리
+            function toggleEditForm(comment_id, isEdit) {              
+                let detail_btns = $('#detail-btns-' + comment_id)
+                let comment_date =  $('#comment-date-' + comment_id)
+                let comment_content =  $('#comment-content-' + comment_id)
+                let comment_update_form = $('#comment-update-form-' + comment_id)
+                let textarea = comment_update_form.find('textarea');
+
+                if (isEdit) {
+                    detail_btns.hide()
+                    comment_date.hide();
+                    comment_content.hide();
+                    comment_update_form.show();
+                } else {
+                    detail_btns.show()               
+                    comment_date.show();
+                    comment_content.show();
+                    comment_update_form.hide();
+                    textarea.val(comment_content.text())
+                }
+            }
+            
+            // 댓글 수정
+            $('.comment-update-form').on('submit', function(e){
                 e.preventDefault();
-                
-                const button = $(this);
-                const url = button.data('url');
+
+                const form = e.target;
+                const url = form.action;
+                const formData = Object.fromEntries(new FormData(form));
 
                 $.ajax({
                     url: url,
-                    method: 'DELETE',
+                    method: 'PUT',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
                     headers: { 'X-CSRFToken': '{{ csrf_token }}' },
                     success: function (data) {
-                        $('#comment-' + data.comment_pk).remove()
+                        $('#comment-content-' + data.id).text(data.content)
+                        $('#comment-date-' + data.id).text(data.formatted_date.updated_at)
+                        toggleEditForm(data.id, false)
                     },
                     error: function (e) {
                         alert('An error occurred. Please try again.');
                     }
                 });
+            })
+
+            // 댓글 삭제
+            $('#comments-container').on('click', '.comment-delete-btn', function(e) {
+                e.preventDefault();
+                
+                if (confirm("댓글을 삭제하시겠습니까?")) {
+                    const button = $(this);
+                    const url = button.data('url');
+
+                    $.ajax({
+                        url: url,
+                        method: 'DELETE',
+                        headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+                        success: function (data) {
+                            $('#comment-' + data.comment_pk).remove()
+                        },
+                        error: function (e) {
+                            alert('An error occurred. Please try again.');
+                        }
+                    });
+                }
             })
 
             // 작성 댓글 화면 추가
@@ -95,9 +150,18 @@
                                 <p>${comment.content}</p>
                                 <span>${comment.formatted_date.updated_at}</span>
                             </div>
-                            <div class="d-flex flex-column ms-auto">
-                                <button class="btn btn-outline-primary btn-sm">Update</button>
-                                <button data-url="/api/v1/post/comments/${comment.id}/" class="btn btn-outline-danger btn-sm mt-2 comment-delete-btn">Delete</button>
+                            <form style="display: none;" id="comment-update-form-${comment.id}" action="/api/v1/post/comments/${comment.id}/">
+                                <textarea class="form-control me-2 mt-2" rows="3"></textarea>
+                            </form>
+                        </div>
+                        <div class="d-flex justify-content-end mt-2">
+                            <div id="detail-btn">
+                                <button data-id="${comment.id}" class="btn btn-outline-primary btn-sm comment-update-btn">Update</button>
+                                <button data-url="/api/v1/post/comments/${comment.id}/" class="btn btn-outline-danger btn-sm comment-delete-btn">Delete</button>
+                            </div>
+                            <div id="edit-btn" style="display: none;">
+                                <button class="btn btn-outline-secondary btn-sm comment-cancel-btn">Cancel</button>
+                                <button class="btn btn-outline-primary btn-sm me-1">Save</button>
                             </div>
                         </div>
                         <hr>

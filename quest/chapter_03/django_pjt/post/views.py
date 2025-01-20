@@ -176,6 +176,16 @@ class CommentListAPIView(BaseApiView):
 # 댓글 수정/삭제  
 class CommentDetailAPIView(BaseApiView):
 
+    # 댓글 수정
+    def put(self, request, *args, **kwargs):
+        comment_pk = self.kwargs.get('comment_pk')
+        comment = self.get_object(Comment, comment_pk)
+        serializer = CommentSerializers(comment, data=request.data, partial=True)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+            
+
     # 댓글 삭제
     def delete(self, request, *args, **kwargs):
         comment_pk = self.kwargs.get('comment_pk')
