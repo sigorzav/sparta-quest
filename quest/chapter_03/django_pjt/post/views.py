@@ -8,7 +8,7 @@ from rest_framework import status
 from django.db.models import F
 from .models import Post, Comment
 from .forms import PostForm
-from .serializers import PostSerializers, CommentSerializers
+from .serializers import CommentSerializers
 
 # ###################################################################################
 # MTV & DEF
@@ -112,45 +112,8 @@ def post_delete(request, pk):
 
 # 공통 APIView
 class BaseApiView(APIView):
-    
     def get_object(self, model, pk):
         return get_object_or_404(model, pk=pk)
-
-
-# 게시글 목록 조회 & 게시글 저장
-class PostListAPIView(BaseApiView):
-    def get(self, request):
-        posts = Post.objects.all()
-    
-        # many=True :: 단일 객체인 경우 생략 가능
-        serializer = PostSerializers(posts, many=True)
-        return Response(serializer.data)
-    
-    def post(self, request):
-        serializer = PostSerializers(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        
-        
-class PostDetailAPIView(BaseApiView):
-    
-    def get(self, request, pk):
-        article = self.get_object(Post, pk)
-        serializer = ArticleSerializer(article)
-        return Response(serializer.data)
-    
-    def put(self, request, pk):
-        article = self.get_object(pk)
-        serializer = ArticleSerializer(article, data=request.data, partial=True)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-    
-    def delete(self, request, pk):
-        article = self.get_object(pk)
-        article.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
     
 # 좋아요
 class LikesAPIView(BaseApiView):

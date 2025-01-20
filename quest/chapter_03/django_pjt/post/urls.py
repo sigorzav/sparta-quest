@@ -12,8 +12,6 @@ urlpatterns = [
     path("post-delete/<int:pk>/", views.post_delete, name="post_delete"),
     
     # DRF
-    path("", views.PostListAPIView.as_view(), name="post_list"),
-    path("<int:pk>/", views.PostDetailAPIView.as_view(), name="post_detail"),
     path("likes/<int:post_pk>/", views.LikesAPIView.as_view(), name="post_like"),
     path("<int:post_pk>/comments/", views.CommentListAPIView.as_view(), name="comment_list"),
     path("comments/<int:comment_pk>/", views.CommentDetailAPIView.as_view(), name="comment_detail"),

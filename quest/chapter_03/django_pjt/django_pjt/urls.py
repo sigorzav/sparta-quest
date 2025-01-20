@@ -25,11 +25,16 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index),
     path("user/", include(("user.urls", "user"), namespace="user")),
-    path("post/", include(("post.urls", "post"), namespace="post")),
+    path("post/", include("post.urls")),
     
     # DRF
+    path("api/v1/post/", include("api_post.urls")),
     path("api/v1/user/", include(("user.urls", "api_user"), namespace="api_user")),
-    path("api/v1/post/", include(("post.urls", "api_post"), namespace="api_post")),
+    
+    # BaseURL 여러 개를 같은 urls로 호출하고자 할 때 아래와 같이 설정
+    # 
+    # path("post/", include(("post.urls", "post"), namespace="post")),
+    # path("api/v1/post/", include(("post.urls", "api_post"), namespace="api_post")),
 ]
 
 if settings.DEBUG:
