@@ -6,7 +6,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     color: #fff;
 }
 
@@ -75,4 +76,16 @@ body {
     .login-container h1 {
         font-size: 1.5rem;
     }
+}
+
+.login-container .field-errors {
+    text-align: left !important;
+    margin-bottom: 5px;
+}
+
+.field-errors .error-text {
+    color: #d9534f;
+    font-size: 13px;
+    display: block;
+    margin: 0;
 }

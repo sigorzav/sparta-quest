@@ -8,36 +8,56 @@
 
 {% block content %}
     <div class="login-container">
-        {{ form.errors }}
         <h1 style="padding-bottom: 5px;">User</h1>
-        <form method="post">
+        <form action="{% url 'user:signup' %}" method="post">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="username" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">username</label>
+                <label for="username" class="form-label" style="text-align: left; display: block; padding: 10px 0;">username</label>
                 {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="field-errors">
+                        {% for error in form.username.errors %}
+                            <small class="error-text">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
             <div class="mb-3">
-                <label for="password1" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">password1</label>
+                <label for="password1" class="form-label" style="text-align: left; display: block; padding: 10px 0;">password1</label>
                 {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="field-errors">
+                        {% for error in form.password1.errors %}
+                            <small class="error-text">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
             <div class="mb-3">
-                <label for="password2" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">password2</label>
+                <label for="password2" class="form-label" style="text-align: left; display: block; padding: 10px 0;">password2</label>
                 {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="field-errors">
+                        {% for error in form.password2.errors %}
+                            <small class="error-text">{{ error }}</small>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
             <div class="mb-3">
-                <label for="nickname" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">nickname</label>
+                <label for="nickname" class="form-label" style="text-align: left; display: block; padding: 10px 0;">nickname</label>
                 {{ form.nickname }}
             </div>
             <div class="mb-3">
-                <label for="post_img" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">Image</label>
+                <label for="post_img" class="form-label" style="text-align: left; display: block; padding: 10px 0;">Image</label>
                 {{ form.profile_img }}
             </div>
             <div class="mb-3">
-                <label for="bio" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">bio</label>
+                <label for="bio" class="form-label" style="text-align: left; display: block; padding: 10px 0;">bio</label>
                 {{ form.bio }}
             </div>
             <button type="submit">Sign Up</button>
         </form>
-        <a href="#" onclick="window.history.back(); return false;">Back</a>
+        <a href="{% url 'user:login' %}">Back</a>
     </div>
 {% endblock content %}

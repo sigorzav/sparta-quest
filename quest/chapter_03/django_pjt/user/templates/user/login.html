@@ -9,8 +9,10 @@
 {% block content %}
     <div class="login-container">
         <h1 style="padding-bottom: 5px;">LOGIN</h1>
-        <form method="post">
+        <form action="{% url 'user:login' %}" method="post">
             {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
+            
             <div class="mb-3">
                 <label for="username" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">username</label>
                 {{ form.username }}
@@ -19,8 +21,16 @@
                 <label for="password" class="form-label" style="text-align: left; display: block; padding-bottom: 5px;">password</label>
                 {{ form.password }}
             </div>
+
+            <!-- Login Error Message -->
+            {% if error %}
+                <div class="mt-3 error-message" style="padding-bottom: 10px; color: red;">
+                    {{ error }}
+                </div>
+            {% endif %}
             <button type="submit">Login</button>
         </form>
         <a href="{% url 'user:signup' %}">Sign Up</a>
     </div>
+    
 {% endblock content %}

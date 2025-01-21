@@ -24,7 +24,7 @@ from common import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index),
-    path("user/", include("user.urls", "user")),
+    path("user/", include("user.urls")),
     path("post/", include("post.urls")),
     
     # DRF

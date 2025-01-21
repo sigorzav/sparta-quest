@@ -23,9 +23,20 @@ def login(request):
     #  > 인증 실패 시, 로그인 화면 이동
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
+        # 인증 성공
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect("post:post_list")
+            next = request.GET.get('next')
+            print
+            next_url = request.GET.get('next', 'post:post_list')
+            return redirect(next_url)
+        # 인증 실패
+        else:
+            context = {
+                "form": form,
+                "error": "Invalid username or password. Please try again."
+            }
+            return render(request, "user/login.html", context)
     # GET :: 로그인 화면 이동
     else:
         form = AuthenticationForm()
@@ -83,8 +94,4 @@ def user_profile(request):
             "user": user,
         }
         return render(request, "user/profile.html", context)
-    
-# ###################################################################################
-# DRF & CLASS
-# ###################################################################################
 

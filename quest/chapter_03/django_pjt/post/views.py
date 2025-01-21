@@ -2,6 +2,7 @@ from django.views.decorators.http import require_POST, require_http_methods
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.db.models import Count
 from django.db.models import F
 from .models import Post
 from .forms import PostForm
@@ -10,7 +11,7 @@ from .forms import PostForm
 # 게시글 목록 조회
 @login_required
 def post_list(request):
-    posts = Post.objects.all().order_by('-pk')
+    posts = Post.objects.annotate(comments_count=Count('comments')).order_by('-pk')
     
     # 페이징
     paginator = Paginator(posts, 10)            # 페이지에서 보여줄 포스트 수
