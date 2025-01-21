@@ -24,12 +24,12 @@ from common import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", views.index),
-    path("user/", include(("user.urls", "user"), namespace="user")),
+    path("user/", include("user.urls", "user")),
     path("post/", include("post.urls")),
     
     # DRF
+    path("api/v1/user/", include("api_user.urls")),
     path("api/v1/post/", include("api_post.urls")),
-    path("api/v1/user/", include(("user.urls", "api_user"), namespace="api_user")),
     
     # BaseURL 여러 개를 같은 urls로 호출하고자 할 때 아래와 같이 설정
     # 
