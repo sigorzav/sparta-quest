@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.dateformat import format
-from .models import Post, Comment
+from post.models import Post, Comment
 
 class PostSerializers(serializers.ModelSerializer):
     class Meta:

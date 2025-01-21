@@ -4,7 +4,7 @@ from rest_framework.decorators import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from post.models import Post, Comment
-from post.serializers import PostSerializers, CommentSerializers
+from .serializers import PostSerializers, CommentSerializers
 
 
 # 커스텀 APIView

@@ -19,6 +19,8 @@
                 <figure class="mb-4" style="text-align: center">
                     <img src="{{ user.profile_img.url }}" class="profile-fixed-size" alt="Profile Image">
                 </figure>
+
+                <!-- Profile Form -->
                 <form action="{% url 'user:user_profile' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">

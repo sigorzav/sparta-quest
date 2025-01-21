@@ -208,9 +208,15 @@
                 </article>
                 <div class="mb-4 d-flex justify-content-between align-items-center">
                     <div class="d-flex">
+                        <!-- List Button -->
                         <button type="button" class="btn btn-primary me-1" onclick="location.href='{% url 'post:post_list' %}'">List</button>
+                        
+                        <!-- 작성자인 경우에만 출력 -->
                         {% if post.author == request.user %}
+                            <!-- Update Button -->
                             <button type="button" class="btn btn-primary me-1" onclick="location.href='{% url 'post:post_update' post.pk %}'">Update</button>
+
+                            <!-- Delete Form -->
                             <form action="{% url 'post:post_delete' post.pk %}" method="POST">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-danger me-1">Delete</button>
@@ -236,14 +242,14 @@
                     <section class="mb-5">
                         <div class="card bg-light">
                             <div class="card-body">
-                                <!-- Single comment -->
+                                <!-- Comment List -->
                                 <div id="comment-section">
                                     {% for comment in post.get_comments %}
                                         {% include "post/comments.html" %}
                                     {% endfor %}
                                 </div>
 
-                                <!-- Comment form -->
+                                <!-- Comment Form -->
                                 <form id="comment-post-form" action="{% url 'api_post:api_comment_list' post.pk %}" class="mb-1 d-flex">
                                     <textarea name="content" class="form-control me-2" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
                                     <button type="submit" class="btn btn-outline-secondary">Post</button>

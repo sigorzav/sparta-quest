@@ -9,6 +9,8 @@
 {% block content %}
     <div class="login-container">
         <h1 style="padding-bottom: 5px;">LOGIN</h1>
+
+        <!-- Login Form -->
         <form action="{% url 'user:login' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.GET.next }}">
@@ -28,8 +30,10 @@
                     {{ error }}
                 </div>
             {% endif %}
+
             <button type="submit">Login</button>
         </form>
+
         <a href="{% url 'user:signup' %}">Sign Up</a>
     </div>
     
