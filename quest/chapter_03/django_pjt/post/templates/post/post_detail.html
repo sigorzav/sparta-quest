@@ -75,6 +75,8 @@
                 let comment_update_form = $('#comment-update-form-' + comment_id)
                 let textarea = comment_update_form.find('textarea');
 
+                textarea.val(comment_content.text())
+
                 if (isEdit) {
                     detail_btns.hide()
                     comment_date.hide();
@@ -85,12 +87,11 @@
                     comment_date.show();
                     comment_content.show();
                     comment_update_form.hide();
-                    textarea.val(comment_content.text())
                 }
             }
             
             // 댓글 수정
-            $('.comment-update-form').on('submit', function(e){
+            $('#comments-container').on('submit', '.comment-update-form', function(e) {
                 e.preventDefault();
 
                 const form = e.target;
@@ -145,23 +146,25 @@
                             <div class="flex-shrink-0">
                                 <img class="rounded-circle comment-fixed-size" src="${comment.user_details.profile_img}" alt="..." />
                             </div>
-                            <div class="ms-3">
+                            <div class="ms-3" style="width: 100%;">
                                 <div class="fw-bold">${comment.user_details.nickname} ${comment.id}</div>
-                                <p>${comment.content}</p>
-                                <span>${comment.formatted_date.updated_at}</span>
+                                <p id="comment-content-${comment.id}">${comment.content}</p>
+                                <span id="comment-date-${comment.id}">${comment.formatted_date.updated_at}</span>
+                                <form style="display: none;" id="comment-update-form-${comment.id}" action="/api/v1/post/comments/${comment.id}/" class="comment-update-form">
+                                    <textarea name="content" class="form-control me-2 mt-2" rows="3"></textarea>
+                                    <div class="d-flex flex-column mt-2">
+                                        <div class="ms-auto">
+                                            <button data-id="${comment.id}" class="btn btn-outline-secondary btn-sm comment-cancel-btn" type="button">Cancel</button>
+                                            <button type="submit" class="btn btn-outline-primary btn-sm me-1">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                            <form style="display: none;" id="comment-update-form-${comment.id}" action="/api/v1/post/comments/${comment.id}/">
-                                <textarea class="form-control me-2 mt-2" rows="3"></textarea>
-                            </form>
                         </div>
                         <div class="d-flex justify-content-end mt-2">
-                            <div id="detail-btn">
+                            <div id="detail-btns-${comment.id}">
                                 <button data-id="${comment.id}" class="btn btn-outline-primary btn-sm comment-update-btn">Update</button>
                                 <button data-url="/api/v1/post/comments/${comment.id}/" class="btn btn-outline-danger btn-sm comment-delete-btn">Delete</button>
-                            </div>
-                            <div id="edit-btn" style="display: none;">
-                                <button class="btn btn-outline-secondary btn-sm comment-cancel-btn">Cancel</button>
-                                <button class="btn btn-outline-primary btn-sm me-1">Save</button>
                             </div>
                         </div>
                         <hr>
