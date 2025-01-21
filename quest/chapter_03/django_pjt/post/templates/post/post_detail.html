@@ -217,7 +217,7 @@
 
                     <!-- Likes -->
                     <div id="like-container" class="d-flex align-items-center">
-                        <button id="like-btn" data-url="{% url 'api_post:post_like' post.pk %}" class="btn btn-outline-danger d-flex align-items-center me-2">
+                        <button id="like-btn" data-url="{% url 'api_post:api_post_like' post.pk %}" class="btn btn-outline-danger d-flex align-items-center me-2">
                             {% if liked %}
                                 <i class="bi bi-heart-fill me-2"></i> Like
                             {% else %}
@@ -241,7 +241,7 @@
                                 </div>
 
                                 <!-- Comment form -->
-                                <form id="comment-post-form" action="{% url 'api_post:comment_list' post.pk %}" class="mb-1 d-flex">
+                                <form id="comment-post-form" action="{% url 'api_post:api_comment_list' post.pk %}" class="mb-1 d-flex">
                                     <textarea name="content" class="form-control me-2" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
                                     <button type="submit" class="btn btn-outline-secondary">Post</button>
                                 </form>
