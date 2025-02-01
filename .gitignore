@@ -27,3 +27,6 @@ dist/
 # 운영 체제 생성 파일
 .DS_Store
 Thumbs.db
+
+# SECRET
+config.py

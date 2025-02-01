@@ -30,6 +30,7 @@ urlpatterns = [
     # DRF
     path("api/v1/user/", include("api_user.urls")),
     path("api/v1/post/", include("api_post.urls")),
+    path("api/v1/openai/", include("api_openai.urls")),
     
     # BaseURL 여러 개를 같은 urls로 호출하고자 할 때 아래와 같이 설정
     # 
